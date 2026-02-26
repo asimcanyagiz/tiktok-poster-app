@@ -7,15 +7,32 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .container { text-align: center; padding: 40px; }
-        h1 { font-size: 1.5rem; margin-bottom: 12px; color: #25f4ee; }
-        p { color: #888; }
+        .container { text-align: center; padding: 40px; max-width: 600px; }
+        h1 { font-size: 1.5rem; margin-bottom: 16px; color: #25f4ee; }
+        p { color: #888; margin-bottom: 16px; }
+        .code-box { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 16px; word-break: break-all; font-family: monospace; font-size: 1.1rem; color: #fe2c55; cursor: pointer; user-select: all; margin: 16px 0; }
+        .hint { font-size: 0.85rem; color: #555; }
+        .error { color: #fe2c55; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Authorization Complete</h1>
-        <p>You can close this tab.</p>
+        <p>Copy this code and paste it in the terminal:</p>
+        <div class="code-box" id="code" onclick="navigator.clipboard.writeText(this.textContent)">Loading...</div>
+        <p class="hint">Click the code to copy it to clipboard.</p>
     </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const el = document.getElementById('code');
+        if (code) {
+            el.textContent = code;
+        } else {
+            const error = params.get('error') || 'No authorization code received.';
+            el.textContent = error;
+            el.classList.add('error');
+        }
+    </script>
 </body>
 </html>
